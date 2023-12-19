@@ -35,7 +35,7 @@ Welcome to the Bomberman Game! This project reimagines the classic Bomberman exp
 </details>
 
 <details>
-<summary>Game and system settings menu
+<summary><h2>Game and system settings menu</h2>h2>
 </summary>
 
     Explore the menu system designed for MATRIX BOMBERMAN. This section provides insights into adjusting game settings and discover system settings for customizing display options, sound preferences, and control mappings.
@@ -56,7 +56,7 @@ Welcome to the Bomberman Game! This project reimagines the classic Bomberman exp
 
 <details>
 
-<summary>Code details</summary>
+<summary><h2>Code details</h2>h2></summary>
    
   The following libraries have been used:
 
@@ -70,13 +70,13 @@ __More about the code here [here](https://github.com/andreeadv/Matrix-Project/bl
 
 </details>
 <details>
-<summary>Electronic setup</summary>
+<summary><h2>Electronic setup</h2>h2></summary>
 
 ![matrix_project](https://github.com/andreeadv/Matrix-Project/assets/91892810/6178fe89-f66c-4572-bbac-e93569046246)
 
 </details>
 
 
-__A video of how it works can be seen [here](https://youtube.com/shorts/eV0GxsFZj0g?feature=share)__
+<h2>__Video of how it works [here](https://youtube.com/shorts/eV0GxsFZj0g?feature=share)__</h2>h2>
 
 
