@@ -8,26 +8,26 @@ Welcome to the Bomberman Game! This project reimagines the classic Bomberman exp
 <details>
   <summary><h2>Game details and how to play</h2></summary>
 
-    In this section, you'll find game details on how to play MATRIX BOMBERMAN. Understand the basic rules, controls, and how to strategically place bombs in the timeless Bomberman style.
+ In this section, you'll find game details on how to play MATRIX BOMBERMAN. Understand the basic rules, controls, and how to strategically place bombs in the timeless Bomberman style.
     
 
- * GAME OBJECTIVE
+ * __GAME OBJECTIVE__
       The goal of the game is to destroy all the walls, strategically placing bombs so that the player does not lose his life.
 
- * PLAYER:
+ * __PLAYER__
       In this dynamic gaming experience, players are easily identifiable by their distinctive slow blinking. Tha player can navigate thorugh spaces without walls. Despite their inability to pass through walls, players possess the power to destroy them using two distinct types of bombs. The small bomb is deployable at any time, while the large bomb becomes available only after reaching a specific score. Both bombs are visually marked by a rapid blink, signaling their impending explosion.
 
-  -MAP:
+  * __MAP__ 
       At the start of each new game, the game map undergoes a dynamic transformation. Walls are randomly positioned, creating a unique and challenging environment. Walls can be categorized into two types: those susceptible to both bomb types, easily identified by their steady appearance, and those exclusively destructible by the large bomb, distinguished by an intense, rapid blink.
 
-  -BOMBS:
+  * __BOMBS__
       The primary objective is to strategically demolish all walls by placing bombs. The arsenal includes a small bomb, deployable at the player's discretion, and a large bomb, unlocked only after achieving a specific score. Both bombs are visually marked by a rapid blink.
 
 
-  -Controls:
+  * __CONTROLS__
       Player movements are seamlessly controlled through a joystick, providing precision in navigating the game environment. The small bomb can be activated with a press of the joystick button, while the large bomb requires a deliberate press of a separate, dedicated button.
 
-  -Audio Experience:
+  * __AUDIO__
       Throughout the game, players are accompanied by specific sounds that enhance the gaming experience. These sounds, representative of in-game actions, can be customized to personal preference, allowing players to toggle them on or off in the settings under the sound-specific option.
   
   
