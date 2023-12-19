@@ -4,26 +4,30 @@
 
 #include <EEPROM.h> 
 
+
 const byte rs = 9;
 const byte en = 8;
 const byte d4 = 7;
 const byte d5 = 6;
 const byte d6 = 5;
 const byte d7 = 4;
+
 LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
 
 const int buzzerPin = 3;
+// declare all the pins for joystick
+const int pinSW = 2; // digital pin connected to switch output
+const int pinX = A0; // A0 - analog pin connected to X output
+const int pinY = A1; // A1 - analog pin connected to Y output
+
 
 int lcdRows = 2;
 int lcdCols = 16;
 int xVal = 0;
 int yVal = 0;
 
-// declare all the pins for joystick
-const int pinSW = 2; // digital pin connected to switch output
-const int pinX = A0; // A0 - analog pin connected to X output
-const int pinY = A1; // A1 - analog pin connected to Y output
-const int resetAndBombPin = 13;
+
+const int bigBombPin = 13;
 byte SwButtonState = HIGH;
 //debounce for sw button
 byte readingSw = HIGH;
@@ -174,17 +178,15 @@ bool playerLedState = 0;
 bool bombLedState = 0;
 bool bigBombLedState = 0;
 bool unbrWallsState = 0;
+
 //variables used as direction indicators that are set according to the movement of the joystick
 unsigned int right = 0;
 unsigned int left = 0;
 unsigned int up = 0;
 unsigned int down = 0;
 
-unsigned int placedBomb = 0;
 
 //variables used for saving the position in which a bombed was placed 
-unsigned int currentRow;
-unsigned int currentCol;
 unsigned int bombRow;
 unsigned int bombCol;
 unsigned int bigBombRow;
@@ -192,13 +194,16 @@ unsigned int bigBombCol;
 
 //when a bomb explodes it destroys walls of length 3 in each direction
 unsigned int nrToExplode = 3;
+
 //when bigbombs explodes, it destroys walls in square two block in each direction from the player position at the moment it was placed
 unsigned int bigBombNrToExplode = 2;
+
 //number of score needed to be able to explode big bomb
 unsigned int bigBombScore = 10;
 
 //used for setting a number of blinks until a bomb explodes
 unsigned int currentBombTicks = 0, bombTicks = 15, currentBigBombTicks = 0, bigBombTicks = 3;
+
 byte moveFlag = 1;
 
 int mapMatrix[mapSize][mapSize];
@@ -208,30 +213,37 @@ byte startRow, startCol, startRowPos, startColPos;
 byte defaultValue = 0, wallsValue = 1, playerValue = 2, bombValue = 3, bigBombValue = 4, unbreakableWalls = 5, bombAndPlayer = 10;
 bool wallsFlag = 0, bombFlag = 0, bombAnimationFlag = 0, playerIsDead = 0, mapIsEmpty = 0, emptyCheckFlag = 0;
 byte wallsProb, unbrWallsProb;
+
 unsigned int score = 0;
 unsigned int scoreForBigBomb = 0;
 unsigned int totalNumberOfLives = 3;
 unsigned int deadCounter = 0; //increments every time the player is killed by the bomb 
-unsigned int remainingLives = 3; //initially the player has all the lives 
-int heartIndex = 0;
-int highestScore = -1;
+
+
 String bigBombScoreNeeded = String(scoreForBigBomb);
 String currentMessage = bigBombScoreNeeded + "/10 for";
+
 byte eppromAddr[3] = {
   1,
   2,
   3
 };
+
 byte eepromValue;
 bool subSubMenuOn = 0;
+
 //on/off sound
 int settingSound = 0, soundON = 1;//by default sound is ON
+
+
 void setup() {
-  // put your setup code here, to run once:
+
   pinMode(pinSW, INPUT_PULLUP);
-  pinMode(resetAndBombPin, INPUT_PULLUP);
+  pinMode(bigBombPin, INPUT_PULLUP);
+
   lcd.begin(lcdCols, lcdRows);
-  lcd.createChar(0, star); // Create the custom character after lcd.begin()
+  //creation of custom characters 
+  lcd.createChar(0, star); 
   lcd.createChar(1, arrowDownUp);
   lcd.createChar(2, optionArrow);
   lcd.createChar(3, lostLife);
@@ -239,11 +251,14 @@ void setup() {
   lcd.createChar(5, bigBomb);
   lcd.createChar(6, rightArrow);
   lcd.createChar(7, leftArrow);
+
   startTime = millis();
+
   Serial.begin(9600);
+
   // the zero refers to the MAX7219 number, it is zero for 1 chip
   lc.shutdown(0, false); // turn off power saving, enables display
-  lc.setIntensity(0, matrixBrightness); // sets brightness (0~15 possible values)
+  lc.setIntensity(0, matrixBrightness); 
   lc.clearDisplay(0); // clear screen
 
   //probability for spawning walls, the bigger is value the smaller is chance (EX. wallsProb = 3 => chance = 1/3 = 33%)
@@ -257,7 +272,9 @@ void setup() {
 }
 
 void loop() {
+
   unsigned long currentMillis = millis();
+
   if (gameON) {
     if (currentMillis - previousMillisDisplayonLCD >= displayOnLcdInterval) {
       previousMillisDisplayonLCD = currentMillis;
@@ -267,7 +284,6 @@ void loop() {
     }
     playGame();
   } else {
-    
     if (currentMillis - startTime <= displayIntroTime) {
       DisplayIntroMsg();
     } else {
@@ -278,6 +294,7 @@ void loop() {
         lcd.print("Press for menu");
       }
     }
+
     displayMenuLayout();
 
     readingSw = digitalRead(pinSW);
@@ -295,11 +312,10 @@ void loop() {
             if (!subMenuOn) {
               crtMainOption = crtMainOptionDisplayed;
               takeMainMenuAction();
-
             } else if (!subSubMenuOn) {
               crtSecondOption = crtSecondOptionDisplayed;
               takeSubMenuAction();
-            } else {
+            } else {//exit from submenu option
               settingSound = 0;
               subMenuOn = 0;
               subSubMenuOn = 0;
@@ -319,6 +335,7 @@ void loop() {
 
 void playGame() {
 
+  //generate walls one time, at the start of the game
   if (!wallsFlag) {
     generateMapWalls();
     wallsFlag = 1;
@@ -327,7 +344,7 @@ void playGame() {
   displayElements();
 
   checkForEmpty();
-  //reset deadcouter when reaches 3 
+
   if (deadCounter >= 3 || mapIsEmpty) {
     gameOver();
   }
@@ -370,7 +387,6 @@ void gameOver() {
     } else {
       EEPROM.get(2, eepromScore);
       if (score > eepromScore) {
-        byte aux1;
         EEPROM.update(2, score);
       }
     }
@@ -402,8 +418,9 @@ void resetMatrix() {
 }
 
 void setInitialPlayerPosition() {
-  crtPlayerRow = 1 + random(mapSize - 10);
-  crtPlayerCol = 1 + random(mapSize - 10);
+  //to make the player appear in the first 8x8 matrix
+  crtPlayerRow = 1 + random(6);
+  crtPlayerCol = 1 + random(6);
   startRow = 0;
   startCol = 0;
   mapMatrix[crtPlayerRow][crtPlayerCol] = playerValue;
@@ -424,8 +441,7 @@ void generateMapWalls() {
       //no walls in close proximity of the player
       //formula source(chat gpt)
       int distanceToPlayer = abs(row - crtPlayerRow) + abs(col - crtPlayerCol);
-      // Randomly decide whether to set the wall (50% chance)
-      if (distanceToPlayer >= 3) { // Adjust the distance as needed
+      if (distanceToPlayer >= 3) { 
         byte walls, unbrWalls;
         walls = random(wallsProb);
         unbrWalls = random(unbrWallsProb);
@@ -444,15 +460,18 @@ void generateMapWalls() {
 
 void displayElements() {
 
+  //corner from which the visible 8x8 square starts
   startRowPos = startRow;
   startColPos = startCol;
 
   placeBomb();
-  //place big bomb at every 15 score
+
+  //place big bomb at every 10 score
   placeBigBomb();
 
   unsigned long currentMillis = millis();
 
+  //making unbrwakable walls blink very fast 
   if (currentMillis - previousMillisUnbrWalls >= unbrWallsBlinkRate) {
     previousMillisUnbrWalls = currentMillis;
     unbrWallsState = !unbrWallsState;
@@ -521,7 +540,6 @@ void checkForEmpty() {
     }
   }
   if (!emptyCheckFlag) {
-
     mapIsEmpty = 1;
     deadCounter = 5;
     playerIsDead = 1;
@@ -529,7 +547,7 @@ void checkForEmpty() {
 }
 
 void placeBigBomb() {
-  reading = digitalRead(resetAndBombPin);
+  reading = digitalRead(bigBombPin);
 
   if (readingSw != lastReadingSw) {
     lastDebounceTime = millis();
@@ -603,6 +621,7 @@ void placeBigBomb() {
 }
 
 void placeBomb() {
+
   readingSw = digitalRead(pinSW);
 
   if (readingSw != lastReadingSw) {
@@ -617,15 +636,16 @@ void placeBomb() {
         bombCol = crtPlayerCol;
         bombFlag = 1;
       } else if (SwButtonState == HIGH && playerIsDead) {
-        //generateMapWalls();
+        //when plyer dies it starts again from the previous position when button is pressed for playing again
         mapMatrix[crtPlayerRow][crtPlayerCol] = playerValue;
         playerIsDead = 0;
-        // score = 0;
       }
     }
   }
   lastReadingSw = readingSw;
+
   if (bombFlag) {
+
     //set with the number of leds that can be turned off according to the position in the matrix
     int top, right, bottom, left;
 
@@ -657,7 +677,7 @@ void placeBomb() {
       if(soundON)
         tone(buzzerPin, 250, 500);
       if (!bombAnimationFlag) {
-        // //first part of exploding animation
+        //first part of exploding animation
         //top
         for (int i = 0; i <= top; i++) {
           if (mapMatrix[bombRow - i][bombCol] == playerValue || mapMatrix[bombRow - i][bombCol] == bombAndPlayer) {
@@ -690,7 +710,6 @@ void placeBomb() {
             lc.setLed(0, bombRow, bombCol + i, true);
           }
         }
-
         //bottom
         for (int i = 0; i <= bottom; i++) {
           if (mapMatrix[bombRow + i][bombCol] == playerValue || mapMatrix[bombRow + i][bombCol] == bombAndPlayer) {
@@ -810,15 +829,16 @@ void displayScore() {
       lcd.setCursor(13, 1);
       lcd.print(score);
     }
-
   }
 }
 void movePlayer(unsigned int row, unsigned int col) {
   int movePlayerBuzzerTone = 2500;
   int movePlayerBuzzerDuration = 100;
   unsigned long currentMillis = millis();
+
   xValue = analogRead(pinX);
   yValue = analogRead(pinY);
+
   if (moveFlag) {
     //move player down
     if (xValue < minThreshold && joyMoved == false) {
@@ -872,6 +892,7 @@ void movePlayer(unsigned int row, unsigned int col) {
         //play sound
         if(soundON)
           tone(buzzerPin, movePlayerBuzzerTone, movePlayerBuzzerDuration);
+        
         if (mapMatrix[crtPlayerRow][crtPlayerCol] == bombAndPlayer) {
           mapMatrix[crtPlayerRow][crtPlayerCol] = bombValue;
         } else {
@@ -986,19 +1007,18 @@ void displayMenuLayout() {
 }
 void takeMainMenuAction() {
   switch (crtMainOption) {
-
-  case 1:
-    gameON = 1;
-    break;
-  case 2:
-    subMenuOn = 1;
-    break;
-  case 3:
-    printAbout();
-    crtMainOption = 0;
-    crtMainOptionDisplayed = 1;
-    break;
-  }
+    case 1:
+      gameON = 1;
+      break;
+    case 2:
+      subMenuOn = 1;
+      break;
+    case 3:
+      printAbout();
+      crtMainOption = 0;
+      crtMainOptionDisplayed = 1;
+      break;
+    }
 }
 void takeSubMenuAction() {
   switch (crtSecondOption) {
@@ -1094,11 +1114,11 @@ void DisplayIntroMsg() {
   lcd.setCursor(0, 0);
   lcd.print("Dive into matrix");
   lcd.setCursor(2, 1);
-  lcd.write(byte(0)); // Display the custom character with index 0
+  lcd.write(byte(0)); 
   lcd.setCursor(3, 1);
   lcd.print("BOMBERMAN");
   lcd.setCursor(12, 1);
-  lcd.write(byte(0)); // Display the custom character with index 0
+  lcd.write(byte(0));
 }
 
 void displayOption() {
@@ -1120,29 +1140,29 @@ void displayOption() {
 
     }
   } else if (!subSubMenuOn) {
-    switch (crtSecondOptionDisplayed) {
-    case 1:
-      lcd.print("Matrix Br");
-      break;
-    case 2:
-      lcd.print("LCD Br");
-      break;
-    case 3:
-      lcd.print("BestScore");
-      break;
-    case 4:
-      lcd.print("Sound");
-      break;
-    case 5:
-      lcd.print("Reset Score");
-      break;
-    case 6:
-      lcd.print("Back");
-      break;
-    default:
-      lcd.print("Matrix Br"); //by default show the first option
-      break;
-    }
+      switch (crtSecondOptionDisplayed) {
+      case 1:
+        lcd.print("Matrix Br");
+        break;
+      case 2:
+        lcd.print("LCD Br");
+        break;
+      case 3:
+        lcd.print("BestScore");
+        break;
+      case 4:
+        lcd.print("Sound");
+        break;
+      case 5:
+        lcd.print("Reset Score");
+        break;
+      case 6:
+        lcd.print("Back");
+        break;
+      default:
+        lcd.print("Matrix Br"); //by default show the first option
+        break;
+      }
   }
 
 }
