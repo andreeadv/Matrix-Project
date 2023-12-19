@@ -77,6 +77,6 @@ __More about the code here [here](https://github.com/andreeadv/Matrix-Project/bl
 </details>
 
 
-<h2>__Video of how it works [here](https://youtube.com/shorts/eV0GxsFZj0g?feature=share)__</h2>h2>
+<h2>Video of how it works [here](https://youtube.com/shorts/eV0GxsFZj0g?feature=share)</h2>
 
 
