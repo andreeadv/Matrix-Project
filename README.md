@@ -70,13 +70,13 @@ __More about the code here [here](https://github.com/andreeadv/Matrix-Project/bl
 
 </details>
 <details>
-<summary><h2>Electronic setup</h2>h2></summary>
+<summary><h2>Electronic setup</h2></summary>
 
 ![matrix_project](https://github.com/andreeadv/Matrix-Project/assets/91892810/6178fe89-f66c-4572-bbac-e93569046246)
 
 </details>
 
 
-<h2> [Video of how it works](https://youtube.com/shorts/eV0GxsFZj0g?feature=share) </h2>
+__Video of how it works [here](https://youtube.com/shorts/eV0GxsFZj0g?feature=share)__
 
 
