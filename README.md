@@ -66,11 +66,13 @@ Welcome to the Bomberman Game! This project reimagines the classic Bomberman exp
 
      "EEPROM.h"
   
-__More about the code here [here](https://youtube.com/shorts/eV0GxsFZj0g?feature=share)__
+__More about the code here [here](https://github.com/andreeadv/Matrix-Project/blob/master/matrix_project.ino)__
 
 </details>
 <details>
 <summary>Electronic setup</summary>
+
+![matrix_project](https://github.com/andreeadv/Matrix-Project/assets/91892810/6178fe89-f66c-4572-bbac-e93569046246)
 
 </details>
 
