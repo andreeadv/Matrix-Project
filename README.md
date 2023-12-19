@@ -8,21 +8,17 @@ Welcome to the Bomberman Game! This project reimagines the classic Bomberman exp
 <details>
   <summary><h2>Game details and how to play</h2></summary>
 
- In this section, you'll find game details on how to play MATRIX BOMBERMAN. Understand the basic rules, controls, and how to strategically place bombs in the timeless Bomberman style.
-    
-
  * __GAME OBJECTIVE__
       The goal of the game is to destroy all the walls, strategically placing bombs so that the player does not lose his life.
 
  * __PLAYER__
       In this dynamic gaming experience, players are easily identifiable by their distinctive slow blinking. Tha player can navigate thorugh spaces without walls. Despite their inability to pass through walls, players possess the power to destroy them using two distinct types of bombs. The small bomb is deployable at any time, while the large bomb becomes available only after reaching a specific score. Both bombs are visually marked by a rapid blink, signaling their impending explosion.
 
-  * __MAP__ 
+  * __MAP__
       At the start of each new game, the game map undergoes a dynamic transformation. Walls are randomly positioned, creating a unique and challenging environment. Walls can be categorized into two types: those susceptible to both bomb types, easily identified by their steady appearance, and those exclusively destructible by the large bomb, distinguished by an intense, rapid blink.
 
   * __BOMBS__
       The primary objective is to strategically demolish all walls by placing bombs. The arsenal includes a small bomb, deployable at the player's discretion, and a large bomb, unlocked only after achieving a specific score. Both bombs are visually marked by a rapid blink.
-
 
   * __CONTROLS__
       Player movements are seamlessly controlled through a joystick, providing precision in navigating the game environment. The small bomb can be activated with a press of the joystick button, while the large bomb requires a deliberate press of a separate, dedicated button.
@@ -38,13 +34,11 @@ Welcome to the Bomberman Game! This project reimagines the classic Bomberman exp
 <summary><h2>Game and system settings menu</h2>
 </summary>
 
-    Explore the menu system designed for MATRIX BOMBERMAN. This section provides insights into adjusting game settings and discover system settings for customizing display options, sound preferences, and control mappings.
-
-  - Main Menu has three options:
+    - Main Menu has three options:
         Start Game -> starts the game
         Settings -> enters Sub Menu
         About -> gives relevant info about the game
-  - Sub Menu has the following option
+    - Sub Menu has the following option
         Matrix Brightness
         LCD Brightness
         Best Scores
