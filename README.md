@@ -78,6 +78,6 @@ __More about the code here [here](https://github.com/andreeadv/Matrix-Project/bl
 </details>
 
 
-__Video of how it works [here](https://youtube.com/shorts/eV0GxsFZj0g?feature=share)__
+__Video of how it works [here](https://youtu.be/4IOSR8Xikzc)__
 
 
