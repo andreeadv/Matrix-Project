@@ -11,10 +11,10 @@ Welcome to the Bomberman Game! This project reimagines the classic Bomberman exp
     In this section, you'll find game details on how to play MATRIX BOMBERMAN. Understand the basic rules, controls, and how to strategically place bombs in the timeless Bomberman style.
     
 
- - GAME OBJECTIVE
+ * GAME OBJECTIVE
       The goal of the game is to destroy all the walls, strategically placing bombs so that the player does not lose his life.
 
- - PLAYER:
+ * PLAYER:
       In this dynamic gaming experience, players are easily identifiable by their distinctive slow blinking. Tha player can navigate thorugh spaces without walls. Despite their inability to pass through walls, players possess the power to destroy them using two distinct types of bombs. The small bomb is deployable at any time, while the large bomb becomes available only after reaching a specific score. Both bombs are visually marked by a rapid blink, signaling their impending explosion.
 
   -MAP:
