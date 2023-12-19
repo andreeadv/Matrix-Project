@@ -8,6 +8,7 @@ Welcome to the Bomberman Game! This project reimagines the classic Bomberman exp
 <details>
   <summary><h2>Game details and how to play</h2></summary>
 In this section, you'll find game details on how to play MATRIX BOMBERMAN. Understand the basic rules, controls, and how to strategically place bombs in the timeless Bomberman style.
+  
  * __GAME OBJECTIVE__
       The goal of the game is to destroy all the walls, strategically placing bombs so that the player does not lose his life.
 
