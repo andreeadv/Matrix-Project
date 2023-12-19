@@ -1,4 +1,4 @@
-__MATRIX BOMBERMAN__ <br>
+# __MATRIX BOMBERMAN__ <br>
 
 Welcome to the Bomberman Game! This project reimagines the classic Bomberman experience through a custom hardware setup, providing an immersive gaming adventure. The game is crafted for play using buttons and a joystick, and it features a menu system for adjusting various game and system settings.
 
@@ -6,7 +6,7 @@ Welcome to the Bomberman Game! This project reimagines the classic Bomberman exp
 
 
 <details>
-  <summary>Game details and how to play</summary>
+  <summary><h2>Game details and how to play</h2></summary>
 
     In this section, you'll find game details on how to play MATRIX BOMBERMAN. Understand the basic rules, controls, and how to strategically place bombs in the timeless Bomberman style.
     
