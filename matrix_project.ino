@@ -137,7 +137,6 @@ int scrollPrevMillis = 0;
 int onOffPrevMillis = 0;
 int subMenuOn = 0;
 int lcdBrightness;
-int inAbout = 0;
 int gameON = 0;
 //------------------GAME VARIABLES----------------
 const byte dinPin = 12; // pin 12 is connected to the MAX7219 pin 1
@@ -292,21 +291,15 @@ void loop() {
         if (SwButtonState == HIGH) {
           if (!navigateMenuOn) {
             navigateMenuOn = 1;
-            Serial.println("in menu");
           } else {
             if (!subMenuOn) {
               crtMainOption = crtMainOptionDisplayed;
-              Serial.print("crtMainOption: ");
-              Serial.println(crtMainOption);
               takeMainMenuAction();
 
             } else if (!subSubMenuOn) {
               crtSecondOption = crtSecondOptionDisplayed;
-              Serial.print("crtSecondOption: ");
-              Serial.println(crtSecondOption);
               takeSubMenuAction();
             } else {
-              Serial.print("subsubmenu exit ");
               settingSound = 0;
               subMenuOn = 0;
               subSubMenuOn = 0;
@@ -673,8 +666,6 @@ void placeBomb() {
             if(soundON)
               tone(buzzerPin, 100, 500);
             deadCounter++;
-            // Serial.print("deadCounter ");
-            // Serial.println(deadCounter);  
           }
           if (mapMatrix[bombRow - i][bombCol] == wallsValue) {
             score++;
@@ -692,8 +683,6 @@ void placeBomb() {
               tone(buzzerPin, 100, 500);
             currentMessage = "pressToContinue";
             deadCounter++;
-            // Serial.print("deadCounter ");
-            // Serial.println(deadCounter);  
           }
           if (mapMatrix[bombRow][bombCol + i] == wallsValue) {
             score++;
@@ -711,8 +700,6 @@ void placeBomb() {
                tone(buzzerPin, 100, 500);
             currentMessage = "pressToContinue";
             deadCounter++;
-            //  Serial.print("deadCounter ");
-            //  Serial.println(deadCounter); 
 
           }
           if (mapMatrix[bombRow + i][bombCol] == wallsValue) {
@@ -731,9 +718,7 @@ void placeBomb() {
             if(soundON)
               tone(buzzerPin, 100, 500);
             currentMessage = "pressToContinue";
-            deadCounter++;
-            // Serial.print("deadCounter ");
-            // Serial.println(deadCounter);  
+            deadCounter++; 
           }
 
           if (mapMatrix[bombRow][bombCol - i] == wallsValue) {
@@ -778,8 +763,6 @@ void placeBomb() {
         currentMessage = "pressToContinue";
       }
       mapMatrix[bombRow][bombCol] = 0;
-      //print on lcd display instead
-      // Serial.println(score);
 
     }
   }
@@ -853,12 +836,10 @@ void movePlayer(unsigned int row, unsigned int col) {
         crtPlayerRow = row + 1;
         if (crtPlayerRow - startRow == realMatrixSize - 1 && (startRow + realMatrixSize) != mapSize) {
           startRow++;
-          //Serial.println(startRowPos);
         }
         crtPlayerCol = col;
         mapMatrix[crtPlayerRow][crtPlayerCol] = playerValue;
       }
-      //Serial.println("to down");
       joyMoved = true;
       xValue = 0;
       moveFlag = 0;
@@ -877,12 +858,10 @@ void movePlayer(unsigned int row, unsigned int col) {
         crtPlayerRow = row - 1;
         if (crtPlayerRow - startRow == 0 && startRow != 0) {
           startRow--;
-          //Serial.println(startRowPos);
         }
         crtPlayerCol = col;
         mapMatrix[crtPlayerRow][crtPlayerCol] = playerValue;
       }
-      // Serial.println("to up");
       joyMoved = true;
       xValue = 0;
       moveFlag = 0;
@@ -902,11 +881,9 @@ void movePlayer(unsigned int row, unsigned int col) {
         crtPlayerCol = col + 1;
         if (crtPlayerCol - startCol == (realMatrixSize - 1) && (startCol + realMatrixSize) != mapSize) {
           startCol++;
-          //Serial.println(startColPos);
         }
         mapMatrix[crtPlayerRow][crtPlayerCol] = playerValue;
       }
-      // Serial.println("to right");
       joyMoved = true;
       yValue = 0;
       moveFlag = 0;
@@ -926,11 +903,9 @@ void movePlayer(unsigned int row, unsigned int col) {
         crtPlayerCol = col - 1;
         if (crtPlayerCol - startCol == 0 && startCol != 0) {
           startCol--;
-          //Serial.println(startRowPos);
         }
         mapMatrix[crtPlayerRow][crtPlayerCol] = playerValue;
       }
-      // Serial.println("to left");
       joyMoved = true;
       yValue = 0;
       moveFlag = 0;
@@ -953,49 +928,47 @@ void movePlayer(unsigned int row, unsigned int col) {
 }
 void joystickMenuMovement() {
   unsigned long currentMillis = millis();
-  if (currentMillis - scrollPrevMillis >= 300) {
+  if (currentMillis - scrollPrevMillis >= 400) {
     scrollPrevMillis = currentMillis;
     // Read joystick values
     xVal = analogRead(pinX);
     // Check joystick movements
     if (xVal < minThreshold && joyMoved == false) {
       navigateDown();
-      //Serial.println("down");
       joyMoved = true;
     }
 
     if (xVal > maxThreshold && joyMoved == false) {
       navigateUp();
-      //Serial.println("up");
       joyMoved = true;
       //for correctly selecting the first main/second option
     }
-  }
     // Reset joyMoved flag when joystick is back to the center
-  if (xVal >= minThreshold && xVal <= maxThreshold) {
-    joyMoved = false;
+    if (xVal >= minThreshold && xVal <= maxThreshold) {
+      joyMoved = false;
+    }
   }
+ 
 
-  if (currentMillis - onOffPrevMillis >= 300) {
+  if (currentMillis - onOffPrevMillis >= 400) {
     onOffPrevMillis = currentMillis;
     yVal = analogRead(pinY);
     //eft movement -> sound on
     if (yVal < minThreshold && joyMoved == false && settingSound){
       soundON = 1;
-      Serial.println("sound on");
       joyMoved = true;
     }
     //right movement -> sound off
     if (yVal > maxThreshold && joyMoved == false && settingSound){
       soundON = 0;
-      Serial.println("sound off");
       joyMoved = true;
+    }
+    if (yVal >= minThreshold && yVal <= maxThreshold) {
+      joyMoved = false;
     }
   }
  
-  if (yVal >= minThreshold && yVal <= maxThreshold) {
-    joyMoved = false;
-  }
+  
 }
 void displayMenuLayout() {
   unsigned long currentMillis = millis();
@@ -1015,34 +988,28 @@ void takeMainMenuAction() {
   switch (crtMainOption) {
 
   case 1:
-    Serial.println("Starting Game");
     gameON = 1;
     break;
   case 2:
     subMenuOn = 1;
-    Serial.println("activated submenu");
     break;
   case 3:
     printAbout();
     crtMainOption = 0;
     crtMainOptionDisplayed = 1;
-    Serial.print("out of about"); //without pressing the button again
     break;
   }
 }
 void takeSubMenuAction() {
   switch (crtSecondOption) {
   case 1:
-    Serial.println("Saving matrix br...");
     subSubMenuOn = 1;
     break;
   case 2:
-    Serial.println("Saving LCD br...");
     subSubMenuOn = 1;
     break;
   case 3:
     byte eepromScore;
-    Serial.println("Best Score:");
     subSubMenuOn = 1;
     lcd.clear();
     lcd.setCursor(0, 0);
@@ -1057,7 +1024,6 @@ void takeSubMenuAction() {
 
     break;
   case 4:
-    Serial.println("ON / OFF");
     subSubMenuOn = 1;
     settingSound = 1;
     lcd.clear();
@@ -1075,19 +1041,10 @@ void takeSubMenuAction() {
     lcd.write(byte(6));
     lcd.setCursor(3, 1);
     lcd.print("R");
-    // lcd.setCursor(7, 0);
-    // lcd.print("Sound");
-    // lcd.setCursor(13, 0);
-    // if(soundON){
-    //   lcd.print("ON");
-    // }else{
-    //   lcd.print("OFF");
-    // }
     lcd.setCursor(5, 1);
     lcd.print("PressToExit");
     break;
   case 5:
-    Serial.println("ResetScores");
     subSubMenuOn = 1;
     resetEEPROM();
     lcd.clear();
@@ -1100,7 +1057,6 @@ void takeSubMenuAction() {
     subMenuOn = 0;
     crtSecondOption = 0; // no scnd option currently displayed or selected
     crtSecondOptionDisplayed = 0;
-    Serial.println("submenu dezactivated");
     break;
   }
 
@@ -1202,17 +1158,9 @@ void displayArrowOption() {
 }
 
 void printAbout() {
+  
   lcd.clear();
-  inAbout = 1;
-  // Add your "About" text here
   String aboutText = "place bombs to destroy walls, small bomb can destroy one type of wall, big bomb can destroy all types, you win when map is clear";
-
-  // display scrolling
-  // for (int i = 0; i < aboutText.length() - 16; ++i) {
-  //     lcd.setCursor(0, 0);
-  //     lcd.print(aboutText.substring(i,i+16));
-  //     delay(500); // Adjust the delay time for scrolling speed
-  // }
 
   //display in chunks
   for (int i = 0; i <= aboutText.length() / 32 + 2; i = i + 2) {
@@ -1220,9 +1168,7 @@ void printAbout() {
     lcd.print(aboutText.substring(((i + 0) * 16), ((i + 1) * 16)));
     lcd.setCursor(0, 1);
     lcd.print(aboutText.substring(((i + 1) * 16), ((i + 2) * 16)));
-    delay(1000);
+    delay(2000);
   }
-
-  // Clear the screen after auto-scrolling
   lcd.clear();
 }
